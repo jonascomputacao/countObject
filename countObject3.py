@@ -15,18 +15,18 @@ image = cv2.GaussianBlur(image, (11, 11), 0)
 thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU)[1]
 
 # Executa o operador morfológico de abertura (Erosão seguida de Dilatação),
-# com isso os elementos de ruído que não foram removidos, serão agora
+# com isso os elementos de ruído que não foram pelo filtro serão removidos agora
 thresh = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (12, 12)))
 
 
-# Cria uma mapa de distãncia utilizando distância Euclidiana,
-# o cálculo de distância consiste da distância dos pixels do elemento
+# Cria uma mapa de distância utilizando Distância Euclidiana,
+# este cálculo consiste da distância dos pixels do elemento
 # até o pixel mais próximo de valor zero, em seguida encontra-se os picos deste mapa
 D = ndimage.distance_transform_edt(thresh)
 localMax = peak_local_max(D, indices=False, min_distance=10,
                           labels=thresh)
 
-# Realiza uma analise dos componentes conectados dos picos locais (localMax),
+# Realiza uma análise dos componentes conectados dos picos locais (localMax),
 # com isso tem-se o inicializador do algoritmo de Watershed
 markers = ndimage.label(localMax, structure=np.ones((3, 3)))[0]
 labels = watershed(-D, markers, mask=thresh)
@@ -39,7 +39,7 @@ for label in np.unique(labels):
     if label == 0:
         continue
 
-    # Cria uma máscara para marcar as labes
+    # Cria uma máscara para marcar as labels
     mask = np.zeros(gray.shape, dtype="uint8")
     mask[labels == label] = 255
 

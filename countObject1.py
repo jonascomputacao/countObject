@@ -17,7 +17,7 @@ thresh = cv2.threshold(blurred, 0, 255, cv2.THRESH_OTSU)[1]
 thresh = cv2.morphologyEx(thresh,cv2.MORPH_OPEN,cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(12,12)))
 
 # Encontra os objetos conectados da imagem.
-# Em seguida cria uma máscara para armazenar os componentes considerados grande
+# Em seguida cria uma máscara para armazenar os componentes encontrados
 labels = measure.label(thresh, neighbors=8, background=0)
 mask = np.zeros(thresh.shape, dtype="uint8")
 

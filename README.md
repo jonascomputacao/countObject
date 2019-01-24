@@ -24,7 +24,8 @@ gerar hipersegmentação e poucos mínimos podem gerar baixa segmentação,
 portanto este é um dos motivos da contagem numerosa que essa abordagem traz.
 
 Nas implementações há a utilização de algumas técnicas de pré-processamento
-como a utilização de filtros gaussianos e operadores morfológicos para a extração de objetos indesejados na imagem.
+como a utilização de filtros gaussianos e operadores morfológicos para a
+extração de objetos indesejados na imagem.
 
 ### Pré requisitos
 Este programa foi escrito em Python e você precisará das seguintes bibliotecas

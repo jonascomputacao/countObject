@@ -16,7 +16,7 @@ imgGray = cv2.GaussianBlur(imgGray, (5, 5), 0)
 # Faz a segmentação da imagem utilizando o método de otsu
 imgBin = cv2.threshold(imgGray,0,255, cv2.THRESH_OTSU)[1]
 
-# Aplica o operador morfológico de Abertura (Erosão seguida de Abertura).
+# Aplica o operador morfológico de Abertura (Erosão seguida de Dilatação).
 # Com isso remove-se o ruído contido na imagem
 imgBin = cv2.morphologyEx(imgBin,cv2.MORPH_OPEN,cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(12,12)))
 
@@ -48,7 +48,7 @@ for x in range(1,height -2):
                 mask[x, y] = mask[x,y-1]
 
             else:
-                #  caso em que toda a vizinhaça é zero, logo é uma nova região
+                #  Se toda vizinhaça é zero, logo é uma nova região
                 # e a quantidade de elementos é incrementada
                 mask[x, y] = elementCount
                 elementCount += 1
