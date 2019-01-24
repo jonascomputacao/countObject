@@ -19,8 +19,8 @@ thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU)[1]
 thresh = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (12, 12)))
 
 
-# Cria uma mapa de distãncia utilizando distancia Euclidiana,
-# o cálculo de distãncia consiste da distância dos pixels do elemento
+# Cria uma mapa de distãncia utilizando distância Euclidiana,
+# o cálculo de distância consiste da distância dos pixels do elemento
 # até o pixel mais próximo de valor zero, em seguida encontra-se os picos deste mapa
 D = ndimage.distance_transform_edt(thresh)
 localMax = peak_local_max(D, indices=False, min_distance=10,

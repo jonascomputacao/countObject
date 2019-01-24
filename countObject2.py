@@ -11,7 +11,7 @@ imgGray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 # por fim aplica um filtro Gaussiano para a redução do ruído
 bordersize=1
 imgGray=cv2.copyMakeBorder(imgGray, bordersize, bordersize, bordersize, bordersize, borderType= cv2.BORDER_CONSTANT,value=[0,0,0] )
-imgGray = cv2.GaussianBlur(imgGray, (11, 11), 0)
+imgGray = cv2.GaussianBlur(imgGray, (5, 5), 0)
 
 # Faz a segmentação da imagem utilizando o método de otsu
 imgBin = cv2.threshold(imgGray,0,255, cv2.THRESH_OTSU)[1]
@@ -19,11 +19,6 @@ imgBin = cv2.threshold(imgGray,0,255, cv2.THRESH_OTSU)[1]
 # Aplica o operador morfológico de Abertura (Erosão seguida de Abertura).
 # Com isso remove-se o ruído contido na imagem
 imgBin = cv2.morphologyEx(imgBin,cv2.MORPH_OPEN,cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(12,12)))
-
-#imgBin = cv2.morphologyEx(imgBin,cv2.MORPH_ERODE,cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(3,3)))
-
-cv2.imshow("MORPH_OPEN", imgBin)
-cv2.imwrite("images/result.jpg",imgBin)
 
 
 # informações de altura e largura da imagem
@@ -33,7 +28,8 @@ height, width = imgBin.shape
 # Este array servirá para a contagem de componentes presentes na imagem
 mask = np.zeros((height,width),int)
 
-# Percorre a imagem e etiqueta os componentes presentes nela
+#
+# Percorre a imagem pixel a pixel e etiqueta os componentes presentes nela
 #
 elementCount = 1 # contador de elementos presentes na imagem
 for x in range(1,height -2):
@@ -52,9 +48,10 @@ for x in range(1,height -2):
                 mask[x, y] = mask[x,y-1]
 
             else:
+                #  caso em que toda a vizinhaça é zero, logo é uma nova região
+                # e a quantidade de elementos é incrementada
                 mask[x, y] = elementCount
                 elementCount += 1
-
 
 
 print("Total de elementos na imagem é ",elementCount)
