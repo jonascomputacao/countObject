@@ -35,7 +35,7 @@ for label in np.unique(labels):
     labelMask[labels == label] = 255
 
 
-    # Encontra os contornos de mask e os ordena
+    # Encontra os contornos de labelMask
     cnts = cv2.findContours(labelMask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
     c = max(cnts, key=cv2.contourArea)
 
@@ -47,4 +47,5 @@ for label in np.unique(labels):
 
 # apresenta a imagem resultado com as marcações dos objetos
 cv2.imshow("Image", image)
+cv2.imwrite("result/resultado_countObject1.jpg",image)
 cv2.waitKey(0)
