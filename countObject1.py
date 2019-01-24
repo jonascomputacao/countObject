@@ -1,7 +1,5 @@
-from imutils import contours
 from skimage import measure
 import numpy as np
-import imutils
 import cv2
 
 # Carrega a imagem, converte de BGR para tons de cinza
@@ -35,30 +33,18 @@ for label in np.unique(labels):
     # do número de pixels presente neste componente específico
     labelMask = np.zeros(thresh.shape, dtype="uint8")
     labelMask[labels == label] = 255
-    numPixels = cv2.countNonZero(labelMask)
 
-    # se a quantidade de pixels for suficiente para considerar este objeto,
-    # ele é adicionado a máscara real, que possuirá as informações de todas as labels
-    #if numPixels > :
-
-    mask = cv2.add(mask, labelMask)
 
     # Encontra os contornos de mask e os ordena
-    cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    cnts = imutils.grab_contours(cnts)
-    cnts = contours.sort_contours(cnts)[0]
+    cnts = cv2.findContours(labelMask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
+    c = max(cnts, key=cv2.contourArea)
 
-    # para cada contorno do objeto, será desenhado um circulo
-    for (i, c) in enumerate(cnts):
-        # draw the bright spot on the image
-        (x, y, w, h) = cv2.boundingRect(c)
-        ((cX, cY), radius) = cv2.minEnclosingCircle(c)
-        cv2.circle(image, (int(cX), int(cY)), int(10 ),
-                   (0, 0, 255), 3)
-        cv2.putText(image, ".{}".format(label), (x-10, y - 15),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
+    ((x, y), r) = cv2.minEnclosingCircle(c)
+    cv2.circle(image, (int(x), int(y)), int(r), (0, 255, 0), 2)
+    cv2.putText(image, ".{}".format(label), (int(x) - 10, int(y)),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
 
 
-        # show the output image
-        cv2.imshow("Image", image)
-        cv2.waitKey(0)
+# apresenta a imagem resultado com as marcações dos objetos
+cv2.imshow("Image", image)
+cv2.waitKey(0)

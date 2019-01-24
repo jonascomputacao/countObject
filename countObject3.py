@@ -35,8 +35,7 @@ print("Total de Labels {}".format(len(np.unique(labels)) - 1))
 #
 # Para cada label retornada pelo watershed
 for label in np.unique(labels):
-    # *****if the label is zero, we are examining the 'background'
-    # **** so simply ignore it
+
     if label == 0:
         continue
 
@@ -44,7 +43,7 @@ for label in np.unique(labels):
     mask = np.zeros(gray.shape, dtype="uint8")
     mask[labels == label] = 255
 
-    # ******* detect contours in the mask and grab the largest one
+    # ******* detecta os contornos
     cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
                             cv2.CHAIN_APPROX_SIMPLE)[-2]
     c = max(cnts, key=cv2.contourArea)
