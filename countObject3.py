@@ -17,7 +17,7 @@ thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU)[1]
 # Executa o operador morfológico de abertura (Erosão seguida de Dilatação),
 # com isso os elementos de ruído que não foram removidos, serão agora
 thresh = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (12, 12)))
-cv2.imshow("open", thresh)
+
 
 # Cria uma mapa de distãncia utilizando distancia Euclidiana,
 # o cálculo de distãncia consiste da distância dos pixels do elemento
@@ -43,17 +43,17 @@ for label in np.unique(labels):
     mask = np.zeros(gray.shape, dtype="uint8")
     mask[labels == label] = 255
 
-    # ******* detecta os contornos
-    cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
-                            cv2.CHAIN_APPROX_SIMPLE)[-2]
+    # detecta os contornos
+    cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
     c = max(cnts, key=cv2.contourArea)
 
     # desenha um círculo no objeto
     ((x, y), r) = cv2.minEnclosingCircle(c)
     cv2.circle(image, (int(x), int(y)), int(r), (0, 255, 0), 2)
-    cv2.putText(image, ".".format(label), (int(x) - 10, int(y)),
+    cv2.putText(image, "{}".format(label), (int(x) - 10, int(y)),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
 
 # apresenta a imagem com as marcações dos objetos
 cv2.imshow("Output", image)
+cv2.imwrite("result/resultado_countObject3.jpg",image)
 cv2.waitKey(0)
