@@ -55,4 +55,7 @@ for x in range(1,height -2):
 
 
 print("Total de elementos na imagem é ",elementCount)
+arq = open('result/result.txt', 'w')
+arq.write("Total de elementos é: {}".format((elementCount)))
+arq.close()
 cv2.waitKey()
